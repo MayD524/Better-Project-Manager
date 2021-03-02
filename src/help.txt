@@ -1,0 +1,7 @@
+Project Manager version 1.0
+
+commands:
+	new	->	Creates a new project
+	run	->	Runs current project
+	build	->	Builds current project
+	add	->  Adds a new langauge to the catalog
