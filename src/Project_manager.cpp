@@ -2,7 +2,9 @@
     Author: Ryan Draskovics
     Name: Project manager
 */
+
 #include <iostream>
+#include <filesystem>
 #include <direct.h>
 #include <fstream>
 #include <vector>
@@ -16,9 +18,7 @@
 // most functions also are in acidic shell (will release eventually)
 
 using namespace std;
-
-string helpFile = "C:\\Project Manager\\help.txt"; // for helpful needs
-
+using namespace filesystem;
 map<string, string> config_data;
 
 vector<string> readFile(string filename)
@@ -126,7 +126,7 @@ void writeFile(vector<string> lines, string outFile)
 
 void startup(string configFile)
 {
-    printf("Loading %s\n", configFile);
+    printf("Loading %s\n", configFile.c_str());
     string delim = "=";
     vector<string> readData = readFile(configFile);
     for (int i = 0; i < readData.size(); i++)
@@ -139,11 +139,15 @@ void startup(string configFile)
 
 int main(int argc, char *argv[])
 {
+    string dir = weakly_canonical(path(argv[0])).parent_path().string();
+    string helpFile = dir + "\\" + "help.txt";
+    string config_File = dir + "\\" + "config.bpm";
+
     printf("Better Project Manager v1.0\n");
-    startup("C:\\Project Manager\\config.bpm");
-    
+    startup(config_File);
+    cout << argv[0] << endl;
     string opt = argv[1];
-    
+
     if (argc > 1)
     {
         if (opt == "--help")
@@ -161,7 +165,7 @@ int main(int argc, char *argv[])
                 char buffer[FILENAME_MAX * 2]; // you never know
                 string fileType = argv[2];
                 vector <string> tmp;
-                transform(fileType.begin(), fileType.end(), fileType.begin(), toupper);
+                transform(fileType.begin(), fileType.end(), fileType.begin(), [](unsigned char c) { return toupper(c); });
                 string fType = ConfigGet(fileType);
                 string dir = getCWD();
                 sprintf_s(buffer, "copy %s %s", fType.c_str(), dir.c_str());
