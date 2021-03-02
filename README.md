@@ -1,4 +1,4 @@
-# Better-Project-Manager
+# Better Project Manager
 An updated c++ version of Project manager
 
 ## Version : 1.0
