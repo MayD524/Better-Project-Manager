@@ -3,7 +3,7 @@ An updated c++ version of Project manager
 
 ## Version : 1.1
 ### Author: Ryan Draskovics
-### Date: 3/2/2021
+### Date: 3/3/2021
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/RyanD524/Better-Project-Manager)
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://GitHub.com/RyanD524/RyanD524)
