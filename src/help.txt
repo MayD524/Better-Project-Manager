@@ -4,4 +4,6 @@ commands:
 	new	->	Creates a new project
 	run	->	Runs current project
 	build	->	Builds current project
-	add	->  Adds a new langauge to the catalog
+	add	->      Adds a new langauge to the catalog
+	list 	-> 	Lists all projects (make sure there is a all_projects.bpm file)
+	find 	-> 	Finds a specified file.
