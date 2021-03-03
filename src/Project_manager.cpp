@@ -15,8 +15,6 @@
 
 #define cwd _getcwd
 
-// most functions also are in acidic shell (will release eventually)
-
 using namespace std;
 using namespace filesystem;
 map<string, string> config_data;
@@ -137,15 +135,49 @@ void startup(string configFile)
 
 }
 
+void NewSettings(string Filetype, string filename, string dir)
+{
+    string ProjectName = path(dir).filename().string();
+    string endString;
+    vector<string> tmp;
+    tmp = readFile(filename);
+
+    endString = ProjectName + ";" + Filetype + ";" + dir;
+    tmp.push_back(endString);
+
+    writeFile(tmp, filename);
+}
+
+void readProjects(string filename, int mode=0, string lookFor="NONE")
+{
+    vector<string> lines = readFile(filename);
+    printf("Project\tType\tDirectory\n");
+    for (int i = 0; i < lines.size(); i++)
+    {
+
+        vector<string> tmp = split(lines[i], ";");
+        if (mode == 0)
+        {
+            printf("%s\t%s\t%s\n", tmp[0].c_str(), tmp[1].c_str(), tmp[2].c_str());
+
+        }
+        else if (mode == 1)
+        {
+            if (tmp[0] == lookFor)
+                printf("%s\t%s\t%s\n", tmp[0].c_str(), tmp[1].c_str(), tmp[2].c_str());
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
     string dir = weakly_canonical(path(argv[0])).parent_path().string();
     string helpFile = dir + "\\" + "help.txt";
     string config_File = dir + "\\" + "config.bpm";
-
-    printf("Better Project Manager v1.0.1\n");
+    string all_projects = dir + "\\" + "all_projects.bpm";
+    printf("Better Project Manager v1.1\n");
     startup(config_File);
-    cout << argv[0] << endl;
+
     string opt = argv[1];
 
     if (argc > 1)
@@ -168,9 +200,11 @@ int main(int argc, char *argv[])
                 vector <string> tmp;
                 transform(fileType.begin(), fileType.end(), fileType.begin(), [](unsigned char c) { return toupper(c); });
                 string fType = ConfigGet(fileType);
-                string dir = getCWD();
-                sprintf_s(buffer, "copy %s %s", fType.c_str(), dir.c_str());
+                string cwddir = getCWD();
+                sprintf_s(buffer, "copy %s %s", fType.c_str(), cwddir.c_str());
                 system(buffer);
+                NewSettings(fileType, all_projects, cwddir);
+                cout << "Project added to settings" << endl;
             }
             else {
                 printf("Insufficient amount of arguements.");
@@ -235,6 +269,19 @@ int main(int argc, char *argv[])
             else {
                 cout << "Add expects 2 arguemnts" << endl;
             }
+        }
+
+        else if (opt == "list")
+        {
+            readProjects(all_projects);
+        }
+        
+        else if (opt == "find")
+        {
+            if (argc > 2)
+                readProjects(all_projects, 1, argv[2]);
+            else
+                cout << "Find requires 2 inputs not 1 or none." << endl;
         }
 
         else
