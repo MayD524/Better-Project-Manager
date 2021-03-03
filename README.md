@@ -1,7 +1,7 @@
 # Better Project Manager
 An updated c++ version of Project manager
 
-## Version : 1.0
+## Version : 1.1
 ### Author: Ryan Draskovics
 ### Date: 3/2/2021
 
