@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
     string helpFile = dir + "\\" + "help.txt";
     string config_File = dir + "\\" + "config.bpm";
 
-    printf("Better Project Manager v1.0\n");
+    printf("Better Project Manager v1.0.1\n");
     startup(config_File);
     cout << argv[0] << endl;
     string opt = argv[1];
@@ -158,6 +158,7 @@ int main(int argc, char *argv[])
                 cout << tmp[i] << endl;
             }
         } 
+
         else if (opt == "new")
         {
             if (argc > 2)
@@ -175,6 +176,7 @@ int main(int argc, char *argv[])
                 printf("Insufficient amount of arguements.");
             }
         }
+
         else if (opt == "run")
         {
             ifstream FileCheck;
@@ -194,6 +196,7 @@ int main(int argc, char *argv[])
                 printf("Insufficient amount of arguements.");
             }
         }
+
         else if (opt == "build")
         {
             ifstream FileCheck;
@@ -213,6 +216,27 @@ int main(int argc, char *argv[])
                 printf("Insufficient amount of arguements.");
             }
         }
+
+        else if (opt == "add")
+        {
+            if (argc > 3)
+            {
+                
+                vector<string> tmp = readFile(config_File);
+                string key = argv[2];
+                transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return toupper(c); });
+                string path = argv[3];
+                string addString = key + "=" + path;
+
+                tmp.push_back(addString);
+                writeFile(tmp, config_File);
+                cout << "Added new config option" << endl;
+            }
+            else {
+                cout << "Add expects 2 arguemnts" << endl;
+            }
+        }
+
         else
         {
             printf("Unknown or unused input. Run --help if you need help.");
